@@ -1,5 +1,11 @@
 package com.mytaxy.test.injection
 
+import com.mytaxy.test.entities.FleetType
+import com.mytaxy.test.entities.Poi
+import com.mytaxy.test.infra.api.mappers.FleetTypeMapper
+import com.mytaxy.test.infra.api.mappers.PoiMapper
+import com.mytaxy.test.infra.api.models.PoiItem
+import com.mytaxy.test.util.Mapper
 import dagger.Binds
 import dagger.Module
 
@@ -10,28 +16,14 @@ import dagger.Module
 @Module
 abstract class MappersModule {
 
-//    @Binds
-//    abstract fun bindGenreMapper(
-//        mapper: GenreMapper
-//    ): Mapper<GenreItem, Genre>
-//
-//    @Binds
-//    abstract fun bindMovieMapper(
-//        mapper: MovieMapper
-//    ): Mapper<MovieItem, Movie>
-//
-//    // Home screen
-//
-//    @Binds
-//    abstract fun bindHomeModelMapper(
-//        mapper: HomeModelMapper
-//    ): Mapper<Movie, HomeModel>
-//
-//    // Detail screen
-//
-//    @Binds
-//    abstract fun bindDetailModelMapper(
-//        mapper: DetailModelMapper
-//    ): Mapper<Movie, DetailModel>
+    @Binds
+    abstract fun bindFleetTypeMapper(
+        mapper: FleetTypeMapper
+    ): Mapper<String, FleetType>
+
+    @Binds
+    abstract fun bindPoiMapper(
+        mapper: PoiMapper
+    ): Mapper<PoiItem, Poi>
 
 }

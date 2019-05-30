@@ -1,5 +1,9 @@
 package com.mytaxy.test.injection
 
+import com.mytaxy.test.domain.FetchPoiUseCase
+import com.mytaxy.test.domain.FetchPoiUseCaseImpl
+import com.mytaxy.test.domain.GetCurrentCityUseCase
+import com.mytaxy.test.domain.GetCurrentCityUseCaseImpl
 import dagger.Binds
 import dagger.Module
 
@@ -10,19 +14,14 @@ import dagger.Module
 @Module
 abstract class DomainModule {
 
-//    @Binds
-//    abstract fun bindFetchAndStoreGenresUseCase(
-//        useCase: FetchAndStoreGenresUseCaseImpl
-//    ): FetchAndStoreGenresUseCase
-//
-//    @Binds
-//    abstract fun bindFetchUpcomingMoviesUseCase(
-//        useCase: FetchUpcomingMoviesUseCaseImpl
-//    ): FetchUpcomingMoviesUseCase
-//
-//    @Binds
-//    abstract fun bindFetchMovieDetailUseCase(
-//        useCase: FetchMovieDetailUseCaseImpl
-//    ): FetchMovieDetailUseCase
+    @Binds
+    abstract fun bindGetCurrentCityUseCase(
+        useCase: GetCurrentCityUseCaseImpl
+    ): GetCurrentCityUseCase
+
+    @Binds
+    abstract fun bindFetchPoiUseCase(
+        useCase: FetchPoiUseCaseImpl
+    ): FetchPoiUseCase
 
 }

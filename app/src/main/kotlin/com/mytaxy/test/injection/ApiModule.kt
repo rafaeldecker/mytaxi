@@ -1,5 +1,6 @@
 package com.mytaxy.test.injection
 
+import com.mytaxy.test.infra.api.PoiApi
 import com.mytaxy.test.infra.api.RetrofitFactory
 import com.mytaxy.test.infra.logger.Logger
 import dagger.Module
@@ -35,11 +36,10 @@ class ApiModule {
         retrofitFactory: RetrofitFactory
     ): Retrofit = retrofitFactory.create()
 
-
-//    @Provides
-//    @Singleton
-//    fun provideTmdbApi(
-//        retrofit: Retrofit
-//    ): TmdbApi = retrofit.create(TmdbApi::class.java)
+    @Provides
+    @Singleton
+    fun providePoiApi(
+        retrofit: Retrofit
+    ): PoiApi = retrofit.create(PoiApi::class.java)
 
 }

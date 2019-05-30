@@ -1,5 +1,6 @@
 package com.mytaxy.test.infra.api
 
+import com.mytaxy.test.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -16,7 +17,7 @@ class RetrofitFactory @Inject constructor(
 
     fun create(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("url") // TODO: Implement
+            .baseUrl(BuildConfig.API_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
