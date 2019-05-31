@@ -6,7 +6,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="@dimen/card_elevation"
-        app:cardBackgroundColor="@color/white">
+        app:cardBackgroundColor="@color/white"
+        android:layout_marginBottom="@dimen/margin_xsmall"
+        android:layout_marginEnd="@dimen/margin_big"
+        android:layout_marginStart="@dimen/margin_big"
+        android:layout_marginTop="@dimen/margin_xsmall"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="0dp">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -16,31 +24,44 @@
             android:gravity="center_vertical">
 
         <LinearLayout
-                android:id="@+id/iconRootLinearLayout"
+                android:id="@+id/iconBackgroundView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/shape_oval_taxi_background"
-                android:padding="@dimen/padding_big">
+                android:padding="@dimen/padding_normal">
 
             <ImageView
                     android:id="@+id/iconImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/fleet_icon_width"
+                    android:layout_height="@dimen/fleet_icon_height"
                     tools:src="@drawable/ic_taxi"/>
-
         </LinearLayout>
 
-        <TextView
-                android:id="@+id/typeTextView"
+        <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_normal"
-                tools:text="@string/fleet_type_taxi"
-                android:textSize="@dimen/text_size_big"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/margin_normal">
+
+            <TextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/fleet_type_taxi"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textColor="@color/black"/>
+
+            <TextView
+                    android:id="@+id/idTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/id"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/gray"/>
+
+        </LinearLayout>
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -48,7 +69,6 @@
                 android:src="@drawable/ic_info"/>
 
     </LinearLayout>
-
 
 
 </androidx.cardview.widget.CardView>

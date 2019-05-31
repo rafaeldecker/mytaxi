@@ -1,5 +1,7 @@
 package com.mytaxy.test.injection
 
+import com.mytaxy.test.android.screens.home.HomeModelItem
+import com.mytaxy.test.android.screens.home.HomeModelMapper
 import com.mytaxy.test.entities.FleetType
 import com.mytaxy.test.entities.Poi
 import com.mytaxy.test.infra.api.mappers.FleetTypeMapper
@@ -25,5 +27,10 @@ abstract class MappersModule {
     abstract fun bindPoiMapper(
         mapper: PoiMapper
     ): Mapper<PoiItem, Poi>
+
+    @Binds
+    abstract fun bindHomeModelMapper(
+        mapper: HomeModelMapper
+    ): Mapper<Poi, HomeModelItem>
 
 }

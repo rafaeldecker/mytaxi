@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">MyTaxyTest</string>
 
+    <string name="id">ID: %d</string>
     <string name="fleet_type_taxi">TAXI</string>
     <string name="fleet_type_pooling">POOLING</string>
     <string name="fleet_type_unknown">UNKNOWN</string>
+
+    <string name="generic_error_message">Something wrong has happened</string>
+
+    <string name="retry">Retry</string>
 
 </resources>
