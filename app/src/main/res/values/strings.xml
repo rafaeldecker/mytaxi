@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyTaxyTest</string>
+
+    <string name="fleet_type_taxi">TAXI</string>
+    <string name="fleet_type_pooling">POOLING</string>
+    <string name="fleet_type_unknown">UNKNOWN</string>
+
 </resources>

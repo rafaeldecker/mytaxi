@@ -2,7 +2,7 @@ package com.mytaxy.test.injection
 
 import androidx.appcompat.app.AppCompatActivity
 import com.mytaxy.test.android.App
-import com.mytaxy.test.android.screens.home.MainActivity
+import com.mytaxy.test.android.screens.home.HomeActivity
 import dagger.Subcomponent
 
 /**
@@ -15,7 +15,7 @@ import dagger.Subcomponent
 ])
 interface ActivityComponent {
 
-    fun inject(activity: MainActivity)
+    fun inject(activity: HomeActivity)
 
     companion object {
 

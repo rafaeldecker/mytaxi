@@ -5,10 +5,10 @@ import com.mytaxy.test.R
 import com.mytaxy.test.android.screens.base.MvvmActivity
 import com.mytaxy.test.injection.ActivityComponent
 
-class MainActivity : MvvmActivity<MainViewModel>() {
+class HomeActivity : MvvmActivity<HomeViewModel>() {
 
-    override val viewModel: MainViewModel by lazy {
-        viewModelFactory.get<MainViewModel>(this)
+    override val viewModel: HomeViewModel by lazy {
+        viewModelFactory.get<HomeViewModel>(this)
     }
 
     override fun assignDependencies() {
@@ -17,7 +17,7 @@ class MainActivity : MvvmActivity<MainViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
         viewModel.fetchData()
     }
 

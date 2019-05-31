@@ -1,7 +1,7 @@
 package com.mytaxy.test.injection
 
 import androidx.lifecycle.ViewModel
-import com.mytaxy.test.android.screens.home.MainViewModel
+import com.mytaxy.test.android.screens.home.HomeViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -15,7 +15,7 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    abstract fun bindHomeViewModel(vm: MainViewModel): ViewModel
+    @ViewModelKey(HomeViewModel::class)
+    abstract fun bindHomeViewModel(vm: HomeViewModel): ViewModel
 
 }
