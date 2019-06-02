@@ -57,7 +57,16 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `on fetch fail is updating state to error`() {
+    fun `on successful fetch is updating state to data`() {
+        val city = mockCity
+        Mockito.`when`(getCurrentCityUseCase.getCity()).thenReturn(Observable.just(city))
+        Mockito.`when`(getPoiUseCase.fetch(city.bounds)).thenReturn(Observable.just(mockPoiList))
+        viewModel.fetchData()
+        Assert.assertTrue(viewModel.state.value is ViewModelState.Data<*>)
+    }
+
+    @Test
+    fun `on fetch fails is updating state to error`() {
         Mockito.`when`(getCurrentCityUseCase.getCity()).thenReturn(Observable.error(Throwable()))
         viewModel = HomeViewModel(
             logger,
@@ -68,15 +77,6 @@ class HomeViewModelTest {
         )
         viewModel.fetchData()
         Assert.assertTrue(viewModel.state.value is ViewModelState.Error)
-    }
-
-    @Test
-    fun `on fetch succeed is updating state to data`() {
-        val city = mockCity
-        Mockito.`when`(getCurrentCityUseCase.getCity()).thenReturn(Observable.just(city))
-        Mockito.`when`(getPoiUseCase.fetch(city.bounds)).thenReturn(Observable.just(mockPoiList))
-        viewModel.fetchData()
-        Assert.assertTrue(viewModel.state.value is ViewModelState.Data<*>)
     }
 
     @Test
