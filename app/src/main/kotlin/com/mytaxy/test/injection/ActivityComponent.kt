@@ -3,6 +3,7 @@ package com.mytaxy.test.injection
 import androidx.appcompat.app.AppCompatActivity
 import com.mytaxy.test.android.App
 import com.mytaxy.test.android.screens.home.HomeActivity
+import com.mytaxy.test.android.screens.map.MapActivity
 import dagger.Subcomponent
 
 /**
@@ -16,6 +17,7 @@ import dagger.Subcomponent
 interface ActivityComponent {
 
     fun inject(activity: HomeActivity)
+    fun inject(activity: MapActivity)
 
     companion object {
 

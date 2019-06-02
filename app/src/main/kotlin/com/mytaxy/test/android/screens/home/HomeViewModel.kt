@@ -1,6 +1,7 @@
 package com.mytaxy.test.android.screens.home
 
 import com.mytaxy.test.android.screens.base.MvvmViewModel
+import com.mytaxy.test.android.screens.base.ViewModelNavigator
 import com.mytaxy.test.android.screens.base.ViewModelState
 import com.mytaxy.test.domain.FetchPoiUseCase
 import com.mytaxy.test.domain.GetCurrentCityUseCase
@@ -24,6 +25,8 @@ class HomeViewModel @Inject constructor(
     private val rxSchedulerProvider: RxSchedulerProvider
 ) : MvvmViewModel() {
 
+    private var poiList: List<Poi> = emptyList()
+
     fun fetchData() {
         addDisposable(
             getCurrentCityUseCase.getCity()
@@ -31,7 +34,10 @@ class HomeViewModel @Inject constructor(
                 .subscribeOnIo(rxSchedulerProvider)
                 .flatMap { city ->
                     getPoiUseCase.fetch(city.bounds)
-                        .map { homeItemModelMapper.mapList(it) }
+                        .map {
+                            poiList = it
+                            homeItemModelMapper.mapList(it)
+                        }
                         .map { city to it }
                 }
                 .observeOnMainThread(rxSchedulerProvider)
@@ -51,6 +57,12 @@ class HomeViewModel @Inject constructor(
                     handleError(it)
                 })
         )
+    }
+
+    fun onItemClicked(item: HomeModelItem) {
+        poiList.firstOrNull { it.id == item.id }?.let {
+            updateNavigator(ViewModelNavigator.Navigate(it))
+        }
     }
 
 }

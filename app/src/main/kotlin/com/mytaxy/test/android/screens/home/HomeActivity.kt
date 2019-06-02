@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mytaxy.test.R
 import com.mytaxy.test.android.screens.base.MvvmActivity
+import com.mytaxy.test.android.screens.base.ViewModelNavigator
 import com.mytaxy.test.android.screens.base.ViewModelState
+import com.mytaxy.test.android.screens.base.withNavigator
+import com.mytaxy.test.android.screens.map.MapActivity
+import com.mytaxy.test.entities.Poi
 import com.mytaxy.test.injection.ActivityComponent
 import com.mytaxy.test.util.ClickHandler
 import kotlinx.android.synthetic.main.activity_home.*
@@ -48,6 +52,14 @@ class HomeActivity : MvvmActivity<HomeViewModel>(),
         }
     }
 
+    override fun onNavigate(navigator: ViewModelNavigator) {
+        withNavigator(navigator) {
+            if (it is Poi) {
+                MapActivity.launch(this, it)
+            }
+        }
+    }
+
     private fun showData(data: HomeModel) {
         errorLayout.visibility = View.GONE
         loadingProgressBar.visibility = View.GONE
@@ -65,7 +77,7 @@ class HomeActivity : MvvmActivity<HomeViewModel>(),
     }
 
     override fun onClick(item: HomeModelItem) {
-
+        viewModel.onItemClicked(item)
     }
 
 }
