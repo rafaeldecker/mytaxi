@@ -14,6 +14,8 @@ class GetCurrentCityUseCaseImpl @Inject constructor(
 
 ) : GetCurrentCityUseCase {
 
+    // TODO: Currently hardcoded, update it in the future to use geolocation/another approach if needed
+
     override fun getCity(): Observable<City> =
         Observable.just(
             City(

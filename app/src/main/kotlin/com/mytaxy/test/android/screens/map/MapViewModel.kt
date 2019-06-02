@@ -2,6 +2,7 @@ package com.mytaxy.test.android.screens.map
 
 import com.google.android.gms.maps.model.LatLngBounds
 import com.mytaxy.test.android.screens.base.MvvmViewModel
+import com.mytaxy.test.android.screens.base.ViewModelState
 import com.mytaxy.test.domain.FetchPoiUseCase
 import com.mytaxy.test.entities.Bounds
 import com.mytaxy.test.entities.Poi
@@ -19,7 +20,6 @@ class MapViewModel @Inject constructor(
     private val rxSchedulerProvider: RxSchedulerProvider
 ): MvvmViewModel() {
 
-
     private var selectedPoi: Poi? = null
 
     fun updateSelectedPoi(poi: Poi?) {
@@ -35,7 +35,7 @@ class MapViewModel @Inject constructor(
             fetchPoiUseCase.fetch(bounds)
                 .saveMainThread(rxSchedulerProvider)
                 .subscribe({
-                    // Todo: update data
+                    updateState(ViewModelState.Data(it))
                 },{
                     handleError(it)
                 })

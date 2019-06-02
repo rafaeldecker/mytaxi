@@ -4,6 +4,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 
 /**
+ * Base Activity class that should be used to
+ * handle all commons actions of activities
+ *
  * Created by Rafael Decker on 2019-05-28.
  */
 
