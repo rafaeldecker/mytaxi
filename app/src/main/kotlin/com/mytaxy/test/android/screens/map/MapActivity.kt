@@ -14,10 +14,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.mytaxy.test.R
 import com.mytaxy.test.android.screens.base.MvvmActivity
 import com.mytaxy.test.android.screens.base.ViewModelState
+import com.mytaxy.test.entities.FleetType
 import com.mytaxy.test.entities.Poi
 import com.mytaxy.test.util.extensions.toLatLong
 import com.mytaxy.test.injection.ActivityComponent
-
 
 class MapActivity : MvvmActivity<MapViewModel>(), OnMapReadyCallback {
 
@@ -58,31 +58,26 @@ class MapActivity : MvvmActivity<MapViewModel>(), OnMapReadyCallback {
 
         intent?.extras?.getParcelable<Poi>(POI_KEY)?.let {
             val coordinate = it.coordinate.toLatLong()
-            val icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pooling)
-            val marker = MarkerOptions()
-                .position(coordinate)
-                .title(it.id.toString())
-                .rotation(it.heading.toFloat())
-                .flat(true)
-                .anchor(0.5f, 0.5f)
-                .icon(icon)
-            map.addMarker(marker)
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, DEFAULT_ZOOM))
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onViewModelStateChanged(state: ViewModelState) {
         when (state) {
             ViewModelState.Loading -> updateLoading(true)
+            is ViewModelState.Data<*> -> updateData(state.data as List<Poi>)
             is ViewModelState.Error -> handleError()
-            is ViewModelState.Data<*> -> updateData(state.data)
         }
     }
 
-    private fun updateData(data: Any?) {
+    private fun updateData(data: List<Poi>) {
         updateLoading(false)
         map.clear()
-
+        data.forEach {
+            val marker = buildMarker(it)
+            map.addMarker(marker)
+        }
     }
 
     private fun handleError() {
@@ -92,6 +87,22 @@ class MapActivity : MvvmActivity<MapViewModel>(), OnMapReadyCallback {
 
     private fun updateLoading(isLoading: Boolean) {
 
+    }
+
+    private fun buildMarker(it: Poi): MarkerOptions {
+        val coordinate = it.coordinate.toLatLong()
+        val image = if (it.fleetType == FleetType.POOLING) {
+            R.drawable.ic_map_pooling
+        } else {
+            R.drawable.ic_map_taxi
+        }
+        val icon = BitmapDescriptorFactory.fromResource(image)
+        return MarkerOptions()
+            .position(coordinate)
+            .rotation(it.heading.toFloat())
+            .flat(true)
+            .anchor(0.5f, 0.5f)
+            .icon(icon)
     }
 
     companion object {
