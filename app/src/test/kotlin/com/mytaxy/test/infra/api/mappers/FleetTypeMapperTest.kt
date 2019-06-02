@@ -41,4 +41,9 @@ class FleetTypeMapperTest {
         Assert.assertEquals(type, FleetType.UNKNOWN)
     }
 
+    @Test(expected = NotImplementedError::class)
+    fun testMappingReverseIsNotImplemented() {
+        mapper.mapReverse(FleetType.POOLING)
+    }
+
 }
