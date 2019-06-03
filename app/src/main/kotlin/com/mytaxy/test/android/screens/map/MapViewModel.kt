@@ -7,6 +7,7 @@ import com.mytaxy.test.domain.FetchPoiUseCase
 import com.mytaxy.test.entities.Bounds
 import com.mytaxy.test.entities.Poi
 import com.mytaxy.test.infra.schedulers.RxSchedulerProvider
+import com.mytaxy.test.util.Mapper
 import com.mytaxy.test.util.extensions.saveMainThread
 import com.mytaxy.test.util.extensions.toBounds
 import javax.inject.Inject
@@ -17,22 +18,32 @@ import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
     private val fetchPoiUseCase: FetchPoiUseCase,
+    private val mapper: Mapper<Poi, MapModel>,
     private val rxSchedulerProvider: RxSchedulerProvider
 ): MvvmViewModel() {
 
     private var selectedPoi: Poi? = null
 
-    fun updateSelectedPoi(poi: Poi?) {
-        selectedPoi = poi
+    init {
+        showLoading()
     }
 
-    fun onBoundsChanged(bound: LatLngBounds) {
-        fetchData(bound.toBounds())
+    fun onBoundsChanged(bounds: Bounds) {
+        fetchData(bounds)
+    }
+
+    fun onMapReady(poi: Poi?) {
+        selectedPoi = poi
     }
 
     private fun fetchData(bounds: Bounds) {
         addDisposable(
             fetchPoiUseCase.fetch(bounds)
+                .doOnSubscribe { showLoading() }
+                .map {
+                    val data = addSelectedIfNeeded(it)
+                    mapper.mapList(data)
+                }
                 .saveMainThread(rxSchedulerProvider)
                 .subscribe({
                     updateState(ViewModelState.Data(it))
@@ -40,6 +51,15 @@ class MapViewModel @Inject constructor(
                     handleError(it)
                 })
         )
+    }
+
+    private fun addSelectedIfNeeded(list: List<Poi>): List<Poi> {
+        selectedPoi?.let { selected ->
+            val mutable = list.toMutableList()
+            mutable.add(0, selected)
+            return mutable
+        }
+        return list
     }
 
 }

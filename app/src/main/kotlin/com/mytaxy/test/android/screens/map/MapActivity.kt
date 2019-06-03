@@ -14,10 +14,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.mytaxy.test.R
 import com.mytaxy.test.android.screens.base.MvvmActivity
 import com.mytaxy.test.android.screens.base.ViewModelState
-import com.mytaxy.test.entities.FleetType
 import com.mytaxy.test.entities.Poi
 import com.mytaxy.test.util.extensions.toLatLong
 import com.mytaxy.test.injection.ActivityComponent
+import com.mytaxy.test.util.extensions.toBounds
+import com.mytaxy.test.util.extensions.visibleOrGone
+import kotlinx.android.synthetic.main.activity_maps.*
 
 class MapActivity : MvvmActivity<MapViewModel>(), OnMapReadyCallback {
 
@@ -31,47 +33,43 @@ class MapActivity : MvvmActivity<MapViewModel>(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         setupViews()
-        setupViewModel()
-    }
-
-    private fun setupViews() {
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-    }
-
-    private fun setupViewModel() {
-        val selectedPoi = intent?.extras?.getParcelable<Poi>(POI_KEY)
-        viewModel.updateSelectedPoi(selectedPoi)
     }
 
     override fun assignDependencies() {
         ActivityComponent.init(this).inject(this)
     }
 
+    private fun setupViews() {
+        toolBar.setNavigationOnClickListener { finish() }
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.setOnCameraIdleListener {
             val bounds = map.projection.visibleRegion.latLngBounds
-            viewModel.onBoundsChanged(bounds)
+            viewModel.onBoundsChanged(bounds.toBounds())
+        }
+        val selectedPoi = intent?.extras?.getParcelable<Poi>(POI_KEY)
+        viewModel.onMapReady(selectedPoi)
+        selectedPoi?.let {
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(it.coordinate.toLatLong(), DEFAULT_ZOOM))
         }
 
-        intent?.extras?.getParcelable<Poi>(POI_KEY)?.let {
-            val coordinate = it.coordinate.toLatLong()
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, DEFAULT_ZOOM))
-        }
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun onViewModelStateChanged(state: ViewModelState) {
         when (state) {
             ViewModelState.Loading -> updateLoading(true)
-            is ViewModelState.Data<*> -> updateData(state.data as List<Poi>)
+            is ViewModelState.Data<*> -> updateData(state.data as List<MapModel>)
             is ViewModelState.Error -> handleError()
         }
     }
 
-    private fun updateData(data: List<Poi>) {
+    private fun updateData(data: List<MapModel>) {
         updateLoading(false)
         map.clear()
         data.forEach {
@@ -86,19 +84,13 @@ class MapActivity : MvvmActivity<MapViewModel>(), OnMapReadyCallback {
     }
 
     private fun updateLoading(isLoading: Boolean) {
-
+        loadingProgressBar.visibility = isLoading.visibleOrGone()
     }
 
-    private fun buildMarker(it: Poi): MarkerOptions {
-        val coordinate = it.coordinate.toLatLong()
-        val image = if (it.fleetType == FleetType.POOLING) {
-            R.drawable.ic_map_pooling
-        } else {
-            R.drawable.ic_map_taxi
-        }
-        val icon = BitmapDescriptorFactory.fromResource(image)
+    private fun buildMarker(it: MapModel): MarkerOptions {
+        val icon = BitmapDescriptorFactory.fromResource(it.carImageResId)
         return MarkerOptions()
-            .position(coordinate)
+            .position(it.coordinate)
             .rotation(it.heading.toFloat())
             .flat(true)
             .anchor(0.5f, 0.5f)
