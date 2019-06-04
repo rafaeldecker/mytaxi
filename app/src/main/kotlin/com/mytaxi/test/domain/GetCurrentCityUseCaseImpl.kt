@@ -1,0 +1,34 @@
+package com.mytaxi.test.domain
+
+import com.mytaxi.test.entities.Bounds
+import com.mytaxi.test.entities.City
+import com.mytaxi.test.entities.Coordinate
+import io.reactivex.Observable
+import javax.inject.Inject
+
+/**
+ * Created by Rafael Decker on 2019-05-30.
+ */
+
+class GetCurrentCityUseCaseImpl @Inject constructor(
+
+) : GetCurrentCityUseCase {
+
+    override fun getCity(): Observable<City> =
+        Observable.just(
+            City(
+                name = "Hamburg",
+                bounds = Bounds(
+                    firstPoint = Coordinate(
+                        latitude = 53.694865,
+                        longitude = 9.757589
+                    ),
+                    secondPoint = Coordinate(
+                        latitude = 53.394655,
+                        longitude = 10.099891
+                    )
+                )
+            )
+        )
+
+}

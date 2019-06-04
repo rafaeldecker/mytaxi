@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyTaxyTest</string>
+    <string name="app_name">MyTaxiTest</string>
 
     <string name="id">ID: %d</string>
     <string name="fleet_type_taxi">TAXI</string>
